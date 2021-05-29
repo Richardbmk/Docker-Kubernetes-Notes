@@ -1,0 +1,28 @@
+## Sección 14:A Multi-Container App with
+Kubernetes
+
+> docker-compose up --build
+
+> kubectl apply -f k8s
+
+> minikube dashboard
+
+> kubectl get deployments
+> kubectl delete deployment <name_deployment>
+
+> kubectl apply -f <folder_with_k8s_files>
+> kubectl apply -f k8s
+> kubectl get services
+> kubectl logs <name of the pods>
+
+> kubectl get storagesclass
+> kubectl describe storagesclass
+
+> kubectl get pods
+> kubectl get pv (pv = persisten volume)
+> kubectl get pvc (persistence volume claim)
+
+
+> kubectl create secret generic <secret_name> --from-literal key=value
+> kubectl create secret generic pgpassword --from-literal PGPASSWORD=12345
+> kubectl get secret

@@ -1,0 +1,25 @@
+# Continuous Integration and Deployment with AWS
+
+In the upcoming lecture we will be adding a script to our .travis.yml file. Due to a change in how the Jest library works
+with Create React App, we need to make a small modification
+
+instead should be:
+
+script:
+  - docker run -e CI=true USERNAME/docker-react npm run test
+Additionally, you may want to set the following property to the top of your .travis.yml file:
+
+language: generic 
+
+
+## A Touch More Travis Setup
+> docker run <image_id> npm run test -- coverage
+
+
+## Travis Keys Update
+In the upcoming lecture we will be adding our AWS variables to the deploy script of the .travis.yml file. There is a slight change that will be required, otherwise you will get an error when Travis attempts to run your code.
+
+The code will now look like this:
+
+access_key_id: $AWS_ACCESS_KEY
+secret_access_key: $AWS_SECRET_KEY

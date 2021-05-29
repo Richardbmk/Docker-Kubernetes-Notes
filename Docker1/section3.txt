@@ -1,0 +1,15 @@
+# Building a Dockerfile (Steps)
+
+1. mkdir redis-image
+2. cd redis-image
+3. cd . > Dockerfile
+4. Write what is needed inside the file
+5. docker build .
+6. docker run <output id>
+
+# Tagging an Image
+
+- docker build -t dockerID/repo_or_projectName:version .
+> docker build -t richardbmk/redis:latest . 
+> docker run richardbmk/redis
+

@@ -1,0 +1,26 @@
+# Node Server Setup
+1. mkdir simpleweb
+2. cd simpleweb
+3. npm init -y
+4. Put what you need in package.json
+5. cd . > app.js
+6. Put what you need in app.js
+7. Create Dockerfile
+8. docker build .
+9. docker build -t richardbmk/simpleweb .
+10. docker run richardbmk/simpleweb (do not use)
+11. docker-machine ip (only for windows Home/7)
+
+
+    ##Container Port Mapping
+12. docker run -p 8080:8080 <image id/name>
+  - docker run -p 8080:8080 richardbmk/simpleweb
+13. To the browser: 192.168.99.100:8080
+
+14. docker run -p 5000:8080 richardbmk/simpleweb
+
+## Specifying a Working Directory
+- docker run -it richardbmk/simpleweb sh
+- ls
+
+

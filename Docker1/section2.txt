@@ -1,0 +1,43 @@
+# Command Lines:
+
+- docker run <image name>
+> docker run hello-world
+
+- docker run <image name> <command_overrride>
+> docker run busybox echo hi there
+> docker run busybox ls
+
+    ## List all runing containers
+- docker ps
+- docker ps --all
+- docker run busybox ping google.com
+
+    ## docker run = docker create + docker start
+- docker create <image name>
+- docker create hello-world
+
+- docker start <container id>
+- docker start -a <container_ID>
+
+    ## Restarting Stopped containers
+- docker start <OLD_container_ID>
+- docker start -a <OLD_container_ID>
+
+    ## Removing Stopped Containers
+- docker system prune
+
+    ## Retrieving Logs Outputs
+- docker logs <container_ID>
+
+    ## Stopping Containers
+- docker stop <container id>
+- docker kill <container id>
+
+    ## Multi-Command Containers (Running redis)
+- docker run redis
+- docker exec -it <conteiner id> <command>
+> docker exec -it f203bfef4bf8 redis-cli
+
+    ## Getting a Command Prompt in a Container
+- docker exec -it f203bfef4bf8 sh
+    

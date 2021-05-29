@@ -1,0 +1,37 @@
+# Building a Multi-Container Application
+
+Change from this:
+
+"pg": "7.4.3",
+
+to this:
+
+"pg": "8.0.3",
+
+
+In your server/index.js file:
+
+Change these lines:
+
+pgClient.on('error', () => console.log('Lost PG connection'));
+ 
+pgClient
+  .query('CREATE TABLE IF NOT EXISTS values (number INT)')
+  .catch(err => console.log(err));
+ 
+to this:
+
+pgClient.on('connect', () => {
+  pgClient
+    .query('CREATE TABLE IF NOT EXISTS values (number INT)')
+    .catch((err) => console.log(err));
+});
+
+
+## Create React App Generation
+> npx create-react-app client
+Inside the newly created client directory, run:
+> rm -r .git
+
+> docker system prune
+> docker-compose down

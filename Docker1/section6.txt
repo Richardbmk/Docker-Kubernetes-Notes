@@ -1,0 +1,75 @@
+# Creating a Production-Grade Workflow
+
+> npx create-react-app frontend
+
+> npm run start
+> npm run test
+> npm run build
+
+> docker build -f Dockerfile.dev .
+
+> docker run -it -p 3000:3000 CONTAINER_ID
+
+> docker run -p 3000:3000 -v /app/node_modules -v "$(pwd):/app" db6948ed43e8
+
+Some trouble shooting:
+> docker run -p 3000:3000 -v /app/node_modules -v "$(pwd):/app" -e CHOKIDAR_USEPOLLING=true db6948ed43e8
+----->>> Only work with power Shell
+> docker run -it -p 3000:3000 -v /app/node_modules -v "/c/Users/Richard/Desktop/RICARDO/ÉXITO/IT KNOWLEDGE/Docker and Kubernetes/frontend:/app" -e CHOKIDAR_USEPOLLING=true db6948ed43e8
+----->>> Shorthand with Docker Compose
+Create a docker-compose.yml
+
+
+
+
+
+
+# React App Exited With Code 0
+4-1-2020
+
+Recently, a bug was introduced with the latest Create React App version that is causing the React app to exit when starting with Docker Compose.
+
+To Resolve this:
+
+Add stdin_open property to your docker-compose.yml file
+
+  web:
+    stdin_open: true
+Make sure you rebuild your containers after making this change with  docker-compose down && docker-compose up --build
+
+https://github.com/facebook/create-react-app/issues/8688
+
+https://stackoverflow.com/questions/60790696/react-scripts-start-exiting-in-docker-foreground-cmd
+
+
+# Executing Tests
+> docker build -f Dockerfile.dev .
+> docker run <image_id> npm run test
+> docker run -it <image_id> npm run test (Use this!!)
+
+# Live Updating Tests
+> docker-compose up
+> docker ps
+> docker exec -it <image_id> npm run test
+
+# Shortcomings on Testing
+> docker ps
+> docker attach <image_id>
+
+
+## Named Builders and AWS
+Do this:
+
+FROM node:alpine
+WORKDIR '/app'
+COPY package.json .
+RUN npm install
+COPY . .
+RUN npm run build
+ 
+FROM nginx
+COPY --from=0 /app/build /usr/share/nginx/html
+
+
+> docker build .
+> docker run -p 8080:80 <image_id>

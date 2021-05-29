@@ -1,0 +1,22 @@
+# Docker Compose with Multiple Local Containers
+
+> docker build -t richardbmk/visitsapp:latest .
+> docker run richardbmk/visitsapp
+
+> docker run redis
+
+# Docker-Compose
+> docker-compose up
+> docker-compose up --build
+
+> docker-compose down 
+> docker-compose up -d
+> docker ps
+
+# Restart Policies in docker-compose-yml
+- "no"
+- Always
+- on-faliure
+- unless-stopped
+
+> docker-compose ps
