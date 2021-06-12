@@ -40,7 +40,13 @@ docker volume ls
 
 docker volume inspect mysql-db
 
+docker volume rm mysql-db
+
 docker container rm -f mysql
+
+docker volume rm $(docker volume ls)
+
+docker rm -f mysql3 && docker volume rm mysql-db
 
 docker container run -d --name mysql3 -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v mysql-db:/var/lib/mysql mysql
 

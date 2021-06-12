@@ -28,7 +28,7 @@ docker image inspect nginx
 
 ## Image Tagging and Pushing to Docker Hub
 
-docker image tag -- help
+docker image tag --help
 
 docker image ls
 

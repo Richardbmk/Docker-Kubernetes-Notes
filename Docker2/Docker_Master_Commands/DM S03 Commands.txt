@@ -158,7 +158,7 @@ docker container port webhost
 
 docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost
 
-## Docker Networks: CLI Management of Virtual Networks
+## Docker Networks: CLI Management of Virtual Networks <------
 
 docker network ls
 
@@ -222,7 +222,7 @@ docker container run -d --net dude --net-alias search elasticsearch:2
 
 docker container ls
 
-docker container run --rm -- net dude alpine nslookup search
+docker container run --rm --net dude alpine nslookup search
 
 docker container run --rm --net dude centos curl -s search:9200
 
