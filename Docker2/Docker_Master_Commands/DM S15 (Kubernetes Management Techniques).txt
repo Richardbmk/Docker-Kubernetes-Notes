@@ -3,6 +3,7 @@
 ## Run, Expose and Create Generators
 
 kubectl create deployment sample --image nginx --dry-run -o yaml
+kubectl create deployment sample --image nginx --dry-run=client -o yaml
 
 kubectl create deployment test --image nginx --dry-run
 
@@ -10,11 +11,11 @@ kubectl create deployment test --image nginx --dry-run -o yaml
 
 kubectl create job test --image nginx -dry-run -o yaml
 
-kubectl expose deployment/test --port 80 --dry-run -o -yaml
+kubectl expose deployment/test --port 80 --dry-run -o yaml
 
 kubectl create deployment test --image nginx
 
-kubectl expose deployment/test --port 80 --dry-run -o -yaml
+kubectl expose deployment/test --port 80 --dry-run -o yaml
 
 kubectl delete deployment test
 

@@ -55,6 +55,7 @@ docker info
 docker-machine
 
 docker-machine create node1
+docker-machine create node1 --virtualbox-no-vtx-check
 
 docker-machine ssh node1
 
@@ -111,3 +112,7 @@ watch docker service ls
 docker service ps drupal
 
 docker service inspect drupal
+
+docker-machine ls
+
+docker-machine --help

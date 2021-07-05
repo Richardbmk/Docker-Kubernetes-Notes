@@ -32,7 +32,8 @@ kubectl apply
 
 kubectl version
 
-kubectl run my-nginx --image nginx
+kubectl run my-nginx --image nginx --> Just create a pod in version 1.18+
+kubectl create deployment nginx --image nginx --> Creates deployment and replicaset and al so a pod!!
 
 kubectl get pods
 
@@ -45,12 +46,13 @@ kubectl get all
 ## Scaling ReplicaSets
 
 kubectl run my-apache --image httpd
+kubectl create deployment nginx --image httpd
 
 kubectl get all
 
-kubectl scale deploy/my-apache --replicas2
+kubectl scale deploy/my-apache --replicas 2
 
-kubectl scale deployment my-apache --replicas2
+kubectl scale deployment my-apache --replicas 2
 
 kubectl get all
 

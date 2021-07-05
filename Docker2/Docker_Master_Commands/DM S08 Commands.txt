@@ -30,6 +30,8 @@ docker service create --name search --replicas 3 -p 9200:9200 elasticsearch:2
 
 docker service ps search
 
+curl http://192.168.99.100:9200/
+
 ## Assignment Answers: Create a Multi-Service Multi-Node Web App
 
 docker node ls
@@ -46,7 +48,7 @@ docker service create --name redis --network frontend --replica 1 redis:3.2
 
 docker service create --name worker --network frontend --network backend COPY IMAGE
 
-docker service create --name db --network backend COPY MOUNT INFO
+docker service create --name db --network backend COPY MOUNT INFO 
 
 docker service create --name result --network backend -p 5001:80 COPY INFO
 
