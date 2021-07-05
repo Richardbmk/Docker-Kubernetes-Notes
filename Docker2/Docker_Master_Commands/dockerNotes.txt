@@ -1,0 +1,7 @@
+- $ docker load -i ../synteam.tar
+- $ docker images
+- $ docker run -dp 5000:5000 synteam
+
+- $ docker ps -a
+- $ docker exec -it container_id bash
+- $ docker push synteam
