@@ -1,0 +1,110 @@
+So for the commands I showed in the previous video to work you must specify the
+ETCDCTL API version and path to certificate files. Below is the final form:
+
+- kubectl exec etcd-master -n kube-system -- sh -c "ETCDCTL_API=3 etcdctl get / --prefix --keys-only --limit=10 --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt  --key /etc/kubernetes/pki/etcd/server.key" 
+- kubectl get pods -n kube-system
+
+- kubectl run nginx --image nginx
+- kubectl get pods
+
+# 20. PODs with YAML
+ - kubectl create -f pod-definition-yml
+ - kubectl describe pod myapp-pod
+
+ # 22. Practice Test Introduction
+ - kubectl get nodes
+
+ # 26. Practice Test - Solution
+
+ - kubectl run redis --image=redis123 --dry-run=client -o yaml > pod.yaml
+ - kubectl apply -f pod.yml
+ - kubectl edit pod redis
+
+# 27. Recap - ReplicaSets
+- kubectl create -f rc-definition.yml
+- kubectl get replicationcontroller
+- kubectl get pods 
+
+- kubectl create -f replicaset-definition.yml
+- kubectl get replicaset
+
+--> SCaling a replicaset
+1. Update the file with the number of new replicas
+2. kubectl replace -f replicaset-definition.yml
+3. kubectl scale --replicas=6 -f replicaset-definition.yml
+3.1. kubectl scale --replicas=6 replicaset myapp-replicaset
+
+
+- kubectl delete replicaset myapp-replicaset
+
+# 29. Practice Test - ReplicaSets - Solution (Optional)
+
+- kubectl edit replicaset name_of_replicaset
+- kubectl delete pods --all
+- kubectl edit replicaset nameOfReplicaset 
+
+# 30. Deployments
+
+- kubectl create -f deployment-definition.yml
+- kubectl get deployments
+- kubectl get replicaset
+- kubectl get pods
+- kubectl get all
+
+# Certification Tip!
+
+--> Create an NGINX Pod
+- kubectl run nginx --image=nginx
+
+--> Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run)
+- kubectl run nginx --image=nginx --dry-run=client -o yaml
+
+--> Create a deployment
+- kubectl create deployment --image=nginx nginx
+
+--> Generate Deployment YAML file (-o yaml). Don't create it(--dry-run)
+- kubectl create deployment --image=nginx nginx --dry-run=client -o yaml
+
+--> Generate Deployment YAML file (-o yaml). Don't create it(--dry-run) with 4 Replicas (--replicas=4)
+- kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml
+
+# 34. Namespaces
+
+- kubectl get pods --namespace=kube-system
+
+- kubectl create -f pod-definition.yml --namespace=dev
+
+- kubectl create -f namespace-dev.yml
+
+- kubectl create namespace dev
+
+--> Make namespace dev the default namespace
+- kubectl config set-context $(kubectl config current-context) --namespace=dev
+
+- kubectl get pods --all-namespaces
+
+- kubectl create -f compute-quota.yaml
+
+# Practice Test - Namespaces
+
+- kubectl get namespaces
+- kubectl get ns
+- kubectl get ns --no-headers
+- kubectl get ns --no-headers | wc -l
+
+- kubectl -n research get pods --no-headers
+
+
+- kubectl run redis --image=redis --namespace=finance
+
+- kubectl run redis --image=redis --namespace=finance --dry-run=client -o yaml > pod-with-namespace.yaml
+- kubectl apply -f pod-with-namespace.yaml
+- kubectl -n finance get pods redis
+
+- kubectl get pods --all-namespace | grep blue
+
+# 37. Services
+
+- kubectl create -f services-definition.yml
+- kubectl get services
+- curl http://192.168.1.2:30008
