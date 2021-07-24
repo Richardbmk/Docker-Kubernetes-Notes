@@ -108,3 +108,54 @@ ETCDCTL API version and path to certificate files. Below is the final form:
 - kubectl create -f services-definition.yml
 - kubectl get services
 - curl http://192.168.1.2:30008
+
+# 38. Services Cluster IP
+
+- kubectl create -f service-definition02.yml
+- kubectl get services
+
+# 41. Solution - Services (optional)
+
+- kubectl get svc
+- kubectl describe service kubernetes
+- kubectl get deployments.apps
+
+- kubectl expose deployment simple-webapp-deployment --name=webapp-service --target-port=8080 --type=NodePort --port=8080 --dry-run=client -o yaml > svc.yaml
+- kubectl apply -f svc.yaml
+
+# 42. Imperative vs Declarative
+
+--> Imperative:
+- kubectl run --image=nginx nginx
+- kubectl create deployment --image=nginx nginx
+- kubectl expose deployment nginx --port 80
+- kubectl edit deployment nginx
+- kubectl scale deployment nginx --replicas=5
+- kubectl set image deployment nginx nginx=nginx:1.18
+- kubectl create -f nginx.yaml
+- kubectl replace -f nginx.yaml
+- kubectl replace --foce -f nginx.yaml
+- kubectl delete -f nginx.yaml
+
+- kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml
+- kubectl expose pod nginx --type=NodePort --port=80 --name=nginx-service --dry-run=client -o yaml
+- kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
+
+--> Declarative:
+- creation of the yaml files
+- kubectl apply -f nginx.yaml 
+- kubectl apply -f /path/to/config-files
+
+# 45. Solution - Imperative Commands (optional)
+
+2. kubectl run nginx-pod --image=nginx:alpine
+3. kubectl run redis --image=redis:alpine --labels=tier=db
+4. kubectl expose pod redis --name=redis-service --port=6379 --target-port=6379
+5. kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3
+6. kubectl run custom-nginx --image=nginx --port=8080
+7. kubectl create ns dev-ns
+8. kubectl create deployment redis-deploy --image=redis --replicas=2 --namespace=dev-ns
+8.1 kubectl get deployments --namespace=dev-ns
+
+9. kubectl run httpd --image=httpd:alpine --port=80 --expose --dry-run=client -o yaml
+9.1 kubectl run httpd --image=httpd:alpine --port=80 --expose

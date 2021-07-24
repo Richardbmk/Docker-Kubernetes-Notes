@@ -1,0 +1,88 @@
+# 51. Manual Scheduling
+
+- kubectl get pods
+- curl --header "Content-Type:application/json" --request POST --data '{"apiVersion":"v1", "kind":"Binding"}' http://$SERVER/api/v1/namespaces/default/pods/$PODNAME/binding/
+
+# 53. Solution - Manual Scheduling (optional)
+
+- kubectl -n kube-system get pods
+
+# 54. Labels and Selectors
+
+- kubectl get pods --selector app=App1
+
+# 56. Solution : Labels and Selectors : (Optional)
+
+- kubectl get pods --show-labels
+- kubectl get pods -l env=dev
+- kubectl get pods -l env=dev --no-headers | wc -l
+
+- kubectl get pods --selector env=dev
+- kubectl get pods --selector env=dev | wc -l
+
+- kubectl get all -l env=prod
+- kubectl get all -l env=prod --no-headers
+- kubectl get all -l env=prod --no-headers | wc -l
+
+- kubectl get pods -l env=prod,bu=finance,tier=frontend
+
+# 57. Taints and Tolerations
+
+- kubectl taint nodes node-name key=value:taint-effect
+    - NoSchedule | PreferNoSchedule | NoExecute
+- kubectl tain nodes node1 app=blue:NoSchedule
+- kubectl describe node kubemaster | grep Taint
+
+# 59. Solution - Taints and Tolerations (Optional)
+
+- kubectl get nodes --no-headers | wc -l
+
+- kubectl describe node node01
+- kubectl describe node node01 | grep Taints
+- kubectl describe node node01 | grep -i taint
+
+- kubectl taint nodes node01 spray=mortein:NoSchedule
+
+- kubectl run mosquito --image=nginx
+- kubectl run mosquito --image=nginx --restart=Never
+
+- kubectl run bee --image=nginx --dry=run -o yaml > pod.yaml
+- kubectl run bee --image=nginx --restart=Never --dry=run -o yaml > pod.yaml
+- kubectl explain pod --recursive | less 
+- kubectl explain pod --recursive | grep -A5 tolerations 
+
+- kubectl get pods -o wide
+
+- kubectl describe nodes master | grep -i taint
+
+--> Eliminate the taint in a Node
+- kubectl taint node master node-role.kubernetes.io/master:NoSchedule-
+
+- kubectl describe node controlplane | grep Taints
+
+- kubectl edit node controlplane
+
+# 60. Node Selectors
+
+- kubectl label nodes <node-name> <label-key>=<label-value>
+- kubectl label nodes node-1 size=Large
+- kubectl create -f pod-definiton03.yaml
+
+Node Affinity Types:
+- requiredDuringSchedulingIgnoredDuringExecution
+- preferredDuringSchedulingIgnoredDuringExecution
+- requiredDuringSchedulingRequiredDuringExecution
+
+# 63. Solution - Node Affinity (Optional)
+
+- kubectl describe node node01
+- kubectl get nodes node01 --show-labels
+- kubectl label nodes node01 color=blue
+- kubectl create deployment blue --image=nginx --replicas=3
+- kubectl get pods -o wide
+
+- kubectl get deployments.apps blue -o yaml > blue.yaml
+- kubectl get deployment blue -o yaml > blue.yaml
+
+- kubectl create deployment red --image=nginx --replicas=2 --dry-run=client -o yaml > red.yaml
+- kubectl get pods -o wide | grep red
