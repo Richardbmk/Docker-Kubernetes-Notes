@@ -86,3 +86,72 @@ Node Affinity Types:
 
 - kubectl create deployment red --image=nginx --replicas=2 --dry-run=client -o yaml > red.yaml
 - kubectl get pods -o wide | grep red
+
+# 65. Resource Requirements and Limits
+
+# 66. Note on default resource requirements and limits
+In the previous lecture, I said - "When a pod is created the containers are
+assigned a default CPU request of .5 and memory of 256Mi".
+For the POD to pick up those defaults you must have first set those as 
+default values for request and limit by creating a LimitRange in that namespace.
+
+##SAMPLE1##
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+spec:
+  limits:
+  - default:
+      memory: 512Mi
+    defaultRequest:
+      memory: 256Mi
+    type: Container
+
+
+##SAMPLE2##
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limit-range
+spec:
+  limits:
+  - default:
+      cpu: 1
+    defaultRequest:
+      cpu: 0.5
+    type: Container
+
+# 67. A quick note on editing PODs and Deployments
+
+- kubectl edit pod <pod name>
+- kubectl delete pod webapp
+- kubectl create -f /tmp/kubectl-edit-ccvrq.yaml
+
+- kubectl get pod webapp -o yaml > my-new-pod.yaml
+- vi my-new-pod.yaml
+- kubectl delete pod webapp
+- kubectl create -f my-new-pod.yaml
+
+- kubectl edit deployment my-deployment
+
+# 69. Solution: Resource Limits : (Optional)
+
+- kubectl describe pod rabbit
+- kubectl delete pod rabbit
+
+# 70. DaemonSets
+
+- kubectl get deamontsets
+- kubectl describe deamonsets monitoring-deamon
+
+# 72. Solution - DaemonSets (optional)
+
+- kubectl get daemonsets --all-namespaces
+- kubectl get ds --all-namespaces
+- kubectl describe daemonsets kube-proxy -n kube-system
+- kubectl -n kube-system describe ds weave-net | grep -i image
+- kubectl get pods -n kube-system -o wide
+- kubectl describe pod kube-flannel-ds-lv7fn -n kube-system
+
+- kubectl create deployment elasticsearch --image=k8s.gcr.io/fluentd-elasticsearch:1.20 --namespace=kube-system -o yaml > fluentd.yaml
