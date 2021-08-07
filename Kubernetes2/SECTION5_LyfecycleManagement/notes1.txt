@@ -1,0 +1,139 @@
+# 92. Rolling Updates and Rollbacks
+
+- kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
+
+- kubectl get replicasets
+- kubectl rollout undo deployment/myapp-deployment
+
+- kubectl get deployments
+
+- kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
+- kubectl rollout status deployment/myapp-deployment
+- kubectl roullout history deployment/myapp-deployment
+- kubectl rollout undo deployment/myapp-deployment
+
+# 96. Commands
+
+- docker run ubuntu
+- docker ps
+- docker ps -a
+- docker run ubuntu [COMMAND]
+- docker run ubuntu sleep 5
+- docker build -t ubuntu-sleeper .
+- docker run ubuntu-sleeper
+
+# 97. Commands and Arguments
+
+- docker run --name ubuntu-sleeper ubuntu-sleeper
+- docker run --name ubuntu-sleeper ubuntu-sleeper 10
+
+- kubectl create -f pod-definition01.yml
+
+- docker run --name ubuntu-sleeper --entrypoint sleep2.0 ubuntu-sleeper 10
+
+
+--> Extract of dockerfile
+---------------------------------
+FROM ubuntu 
+
+ENTYPOINT ["sleep"]
+
+CMD ["5"]
+----------------------------
+
+ENTYPOINT ["sleep"]  ------> command: ["sleep2.0"]
+CMD ["5"]            ------> args: ["10"]
+
+
+100. Configure Environment Variables in Applications
+
+- docker run -e APP_COLOR=pink simple-webapp-color
+
+# 101. Configuring ConfigMaps in Applications
+
+1. Create the ConfigMap 
+2. Inject into Pod
+
+--> IMPERATIVE WAY: 
+
+- kubectl create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MOD=prod
+- kubectl create configmap app-config --from-file=app_config.properties
+
+
+--> DECLARATIVE WAY: 
+
+- kubectl create -f config-map.yaml
+
+- kubectl get configmaps
+- kubectl describe configmaps
+
+
+# 104. Configure Secrets in Applications
+
+1. Create the Secret
+2. Inject it into the pods
+
+--> IMPERATIVE WAY: 
+
+- kubectl create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_User=root --from-literal=DB_Password=paswrd
+- kubectl create secret generic app-secret --from-file=app_secret.properties
+
+
+--> DECLARATIVE WAY: 
+Encoding the sensitive data in secret-data.yaml:
+
+- echo -n 'mysql' | base64
+- echo -n 'root' | base64
+- echo -n 'paswrd' | base64
+
+
+
+- kubectl get secrets
+- kubectl describe secrets
+- kubectl get secret app-secret -o yaml
+
+
+Decoding the sensitive data in secret-data.yaml:
+
+- echo -n 'bXlzcWw=' | base64 --decode
+- echo -n 'cm9vdA==' | base64 --decode
+- echo -n 'cGFzd3Jk' | base64 --decode
+
+
+# 109. Multi Container PODs
+
+# 113. InitContainers
+
+In a multi-container pod, each container is expected to run a process that stays alive as long as the POD's lifecycle. 
+For example in the multi-container pod that we talked about earlier that has a web application and logging agent,
+both the containers are expected to stay alive at all times. The process running in the log agent container is expected to
+stay alive as long as the web application is running. If any of them fails, the POD restarts.
+
+
+
+But at times you may want to run a process that runs to completion in a container. For example a process that pulls a code
+or binary from a repository that will be used by the main web application. That is a task that will be run only  one time
+when the pod is first created. Or a process that waits  for an external service or database to be up before the actual application starts.
+That's where initContainers comes in.
+
+
+
+An initContainer is configured in a pod like all other containers, except that it is specified inside a initContainers section,  like this:
+
+- pod-definitoin08.yml
+
+
+When a POD is first created the initContainer is run, and the process in the initContainer must run
+to a completion before the real container hosting the application starts. 
+
+You can configure multiple such initContainers as well, like how we did for multi-pod containers.
+In that case each init container is run one at a time in sequential order.
+
+If any of the initContainers fail to complete, Kubernetes restarts the Pod repeatedly until the Init Container succeeds.
+
+- pod-definitoin08.yml
+
+
+Read more about initContainers here. And try out the upcoming practice test.
+
+https://kubernetes.io/docs/concepts/workloads/pods/init-containers/

@@ -1,0 +1,32 @@
+# 83. Monitor Cluster Components
+
+- minikube addons enable metrics-server
+. kubectl top node
+- kubectl top pod
+
+
+# 85. Solution: Monitor Cluster Components : (Optional)
+
+- 
+
+# 86. Managing Application Logs
+
+- docker run kodekloud/event-simulator
+- docker run -d kodekloud/event-simulator
+- docker logs -f ecf
+
+- kubectl create -f event-simulator.yaml
+- kubectl logs -f event-simulator-pod event-simulator
+
+
+
+
+# 88. Solution: Logging : (Optional)
+
+- kubectl logs webapp-1 | grep USER5
+- kubectl describe pod webapp-2
+- kubectl logs webapp-2 simple-webapp
+- kubectl logs webapp-2 -c (-c identify all containers in the pod)
+- kubectl logs webapp-2 -c simple-webapp (-c to specify the container)
+- kubectl logs webapp-2 simple-webapp | grep USER30
+
