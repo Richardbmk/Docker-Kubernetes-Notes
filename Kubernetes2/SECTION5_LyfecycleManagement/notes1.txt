@@ -12,7 +12,20 @@
 - kubectl roullout history deployment/myapp-deployment
 - kubectl rollout undo deployment/myapp-deployment
 
-# 96. Commands
+
+# 91. Practice Test - Rolling Updates and Rollbacks
+
+- kubectl get pods
+- kubectl get deployments
+- kubectl get deployments.apps
+- kubectl get replicasets <--> kubectl get rs
+
+- kubectl describe deployments.apps frontend
+- kubectl describe pod frontend-7776cb7d57-2z9m4
+
+- kubectl edit deployments.apps frontend
+
+# 95. Commands
 
 - docker run ubuntu
 - docker ps
@@ -21,6 +34,15 @@
 - docker run ubuntu sleep 5
 - docker build -t ubuntu-sleeper .
 - docker run ubuntu-sleeper
+
+# 96. Practice Test - Commands and Arguments
+
+- kubectl get pods
+- kubectl describe pod ubuntu-sleeper
+- vim ubuntu-sleeper-2.yaml 
+- kubectl apply -f ubuntu-sleeper-2.yaml
+
+
 
 # 97. Commands and Arguments
 
