@@ -66,6 +66,19 @@ CMD ["5"]
 ENTYPOINT ["sleep"]  ------> command: ["sleep2.0"]
 CMD ["5"]            ------> args: ["10"]
 
+# 99. Practice Test: Environment Variables
+
+- kubectl get pod webapp-color -o yaml > webapp-color.yaml
+- kubectl delete pod webapp-color
+- kubectl apply -f webapp-color.yaml
+
+- kubectl get cm <---> kubectl get configmaps
+
+
+- kubectl create m webapp-config-map --from-literal=APP_COLOR=darkblue
+
+- kubectl explain pods --recursive
+- kubectl explain pods --recursive | grep envFrom -A3
 
 100. Configure Environment Variables in Applications
 
@@ -121,8 +134,32 @@ Decoding the sensitive data in secret-data.yaml:
 - echo -n 'cm9vdA==' | base64 --decode
 - echo -n 'cGFzd3Jk' | base64 --decode
 
+# 104. Solution - Secrets (Optional)
+
+- kubectl get secrets
+- kubectl describe secrets default-token-kg52b
+- kubectl get pods,svc
+- kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+- kubectl describe secrets db-secret
+- kubectl explain pods --recursive | less
+- kubectl explain pods --recursive | grep -A8 envFrom
+
 
 # 109. Multi Container PODs
+
+# 108. Solution - Multi-Container Pods (Optional)
+
+- kubectl get pods
+- kubectl describe pod blue
+- kubectl run yellow --image=busybox --restart=Never --dry-run -o yaml > pod.yaml
+- kubectl get ns
+- kubectl get pods,svc -n elastic-stack
+- kubectl get pods,svc -n elastic-stack -o wide
+- kubectl logs app -n elastic-stack
+- kubectl get pod app -n elastic-stack -o yaml > sidecar.yaml
+
+
+
 
 # 113. InitContainers
 
@@ -159,3 +196,9 @@ If any of the initContainers fail to complete, Kubernetes restarts the Pod repea
 Read more about initContainers here. And try out the upcoming practice test.
 
 https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+
+
+# 112. Solution - Init Containers (Optional)
+
+- kubectl get pods
+- kubectl describe pod blue

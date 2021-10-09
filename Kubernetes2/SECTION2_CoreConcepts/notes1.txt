@@ -23,10 +23,13 @@ ETCDCTL API version and path to certificate files. Below is the final form:
 # 27. Recap - ReplicaSets
 - kubectl create -f rc-definition.yml
 - kubectl get replicationcontroller
+- kubectl get rc
 - kubectl get pods 
+- kubectl delete rc myapp-rc
 
 - kubectl create -f replicaset-definition.yml
 - kubectl get replicaset
+- kubectl delete rs myapp-replicaset
 
 --> SCaling a replicaset
 1. Update the file with the number of new replicas
