@@ -1,0 +1,179 @@
+# 117. OS Upgrades
+
+- kubectl drain node-1
+- kubectl uncordon node-1
+- kubectl cordon node-2
+
+# 119. Solution - OS Upgrades (optional)
+
+- kubectl get nodes --no-headers | wc -l
+- kubectl get deployments
+- kubectl get pods -o wide
+- kubectl drain node01 --ignore-daemonsets
+- kubectl uncordon node01
+- kubectl describe node controlplane
+- kubectl drain node01 --ignore-daemonsets --force
+
+# 122. Cluster Upgrade Process
+
+- kubectl upgrade plan
+- kubectl upgrade apply
+
+- kubeadm upgrade plan
+- apt-get upgrade -y kubeadm=1.12.0-00
+- kubeadm upgrade apply v1.12.0
+- apt-get upgrade -y kubelet=1.12.0-00
+- systemctl restart kubelet
+- kubectl get nodes
+
+- kubectl drain node-1
+- kubeadm upgrade node config --kubelet-version v1.12.0
+- systemctl restart kubelet
+- kubectl uncordon node-1
+
+# 123. Demo - Cluster upgrade (with kudeadm)
+- https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
+- kubectl get nodes
+- kubeadm token list
+- kubectl get pods -A
+- cat /etc/*release*
+
+# 125. Solution: Cluster Upgrade
+
+- kubectl get nodes
+- kubectl version --short
+- kubectl get pods -A -o wide
+- kubectl get deployments
+- kubeadm upgrade plan
+- kubectl drain controlplane --ignore-daemonsets
+
+apt update
+apt-cache madison kubeadm
+# find the latest 1.22 version in the list
+# it should look like 1.22.x-00, where x is the latest patch
+
+# replace x in 1.22.x-00 with the latest patch version
+apt-mark unhold kubeadm && \
+apt-get update && apt-get install -y kubeadm=1.20.0-00 && \
+apt-mark hold kubeadm
+
+# replace x with the patch version you picked for this upgrade
+sudo kubeadm upgrade apply v1.20.0
+
+sudo kubeadm upgrade node
+kubectl drain node01 --ignore-daemonsets --force
+
+
+# replace x in 1.22.x-00 with the latest patch version
+apt-mark unhold kubelet kubectl && \
+apt-get update && apt-get install -y kubelet=1.20.0-00 kubectl=1.20.0-00 && \
+apt-mark hold kubelet kubectl
+
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl uncordon controlplane
+
+---> ssh node01
+
+apt-mark unhold kubelet kubectl && \
+apt-get update && apt-get install -y kubelet=1.20.0-00 kubectl=1.20.0-00 && \
+apt-mark hold kubelet kubectl
+
+# 126. Backup and Restore Methods
+
+- kubectl get all --all-namespaces -o yaml > all-deploy-services.yaml
+- ETCDCTL_API=3 etcdctl snapshot save snapshot.db
+- ETCDCTL_API=3 etcdctl snapshot status snapshot.db
+- services kube-apiserver stop
+- ETCDCTL_API=3 etcdctl snapshot restore snapshot.db --data-dir /var/lib/etcd-from-backup
+- systemctl daemon-reload
+- service etcd restart
+- services kube-apiserver start
+
+# Working with ETCDCTL
+
+etcdctl is a command line client for etcd.
+
+
+
+In all our Kubernetes Hands-on labs, the ETCD key-value database is deployed as a static pod on the master. The version used is v3.
+
+To make use of etcdctl for tasks such as back up and restore, make sure that you set the ETCDCTL_API to 3.
+
+
+
+You can do this by exporting the variable ETCDCTL_API prior to using the etcdctl client. This can be done as follows:
+
+export ETCDCTL_API=3
+
+On the Master Node:
+
+
+
+
+
+To see all the options for a specific sub-command, make use of the -h or --help flag.
+
+
+
+For example, if you want to take a snapshot of etcd, use:
+
+etcdctl snapshot save -h and keep a note of the mandatory global options.
+
+
+
+Since our ETCD database is TLS-Enabled, the following options are mandatory:
+
+--cacert                                                verify certificates of TLS-enabled secure servers using this CA bundle
+
+--cert                                                    identify secure client using this TLS certificate file
+
+--endpoints=[127.0.0.1:2379]          This is the default as ETCD is running on master node and exposed on localhost 2379.
+
+--key                                                      identify secure client using this TLS key file
+
+
+
+
+
+Similarly use the help option for snapshot restore to see all available options for restoring the backup.
+
+etcdctl snapshot restore -h
+
+For a detailed explanation on how to make use of the etcdctl command line tool and work with the -h flags, check out the solution video for the Backup and Restore Lab.
+
+
+# 129. Solution - Backup and Restore
+
+- kubectl get deployments
+- kubectl get pods -n kube-system
+- kubectl describe pod etcd-controlplane -n kube-system --> look for the image
+
+    Command:
+      etcd
+      --advertise-client-urls=https://10.36.33.6:2379
+      --cert-file=/etc/kubernetes/pki/etcd/server.crt
+      --client-cert-auth=true
+      --data-dir=/var/lib/etcd
+      --initial-advertise-peer-urls=https://10.36.33.6:2380
+      --initial-cluster=controlplane=https://10.36.33.6:2380
+      --key-file=/etc/kubernetes/pki/etcd/server.key
+      --listen-client-urls=https://127.0.0.1:2379,https://10.36.33.6:2379
+      --listen-metrics-urls=http://127.0.0.1:2381
+      --listen-peer-urls=https://10.36.33.6:2380
+      --name=controlplane
+      --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
+      --peer-client-cert-auth=true
+      --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
+      --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+      --snapshot-count=10000
+      --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+
+
+ETCDCTL_API=3 etcdctl --cacert="/etc/kubernetes/pki/etcd/ca.crt"  --cert="/etc/kubernetes/pki/etcd/server.crt"  --key="/etc/kubernetes/pki/etcd/server.key" snapshot save /opt/snapshot-pre-boot.db 
+
+
+
+- ETCDCTL_API=3 etcdctl snapshot restore /opt/snapshot-pre-boot.db  --data-dir /var/lib/etcd-from-backup
+- ls /var/lib/etcd-from-backup
+- vim /etc/kubernetes/manifests/etcd.yaml --> changed to be host path: etcd-from-backup
