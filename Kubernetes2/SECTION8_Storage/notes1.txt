@@ -1,0 +1,117 @@
+# 167. Storage in Docker
+
+- docker build Dockerfile -t mmushad/my-custom-app
+- docker run mmushad/my-custom-app
+
+- docker volume create data_volume
+- docker run -v data_volume:/var/lib/mysql mysql
+- docker run -v data_volume2:/var/lib/mysql mysql
+- docker run -v /data/mysql:/var/lib/mysql mysql
+
+- docker run \
+    --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql
+
+
+# 168. Volume Driver Plugins in Docker
+
+- STORAGE DRIVERS:
+  - AUFS
+  - ZSF
+  - BTRFS
+  - DEVICE MAPPER
+  - OVERLAY
+
+- VOLUME DRIVERS
+  - Local
+  - Azure File Storage
+  - Convoy
+  - DigitalOcean Block Storage
+  - gce-docker
+  - GlusterFS
+  - NetApp
+  - RexRay
+  - Portworx
+  - VMware vSphere Storage 
+  - AWS EBS
+
+docker run -it \
+    --name mysql 
+    --volume-driver rexray/ebs
+    --mount src=ebs-vol,target=/var/lib/mysql mysql
+
+# 169. Container Storage Interface (CSI)
+
+- Example of container run times:
+  - Docker
+  - rkt
+  - cri-o
+
+- Example of Container Network Interface:
+  - weaveworks
+  - flannel
+  - cilium
+
+- Example of Container Storage Interface:
+  - Portworx
+  - Amazon EBS
+  - DELL EMC
+  - GlusterFS
+
+# 171. Volumes
+
+# 172. Persistent Volumes
+
+- kubectl create -f pv-definition.yaml
+- kubectl get persistenvolume
+
+# 173. Persistent Volume Claims
+
+- kubectl create -f pvc-defination.yaml
+- kubectl get persistenvolumeclaim
+- kubectl delete persistenvolumeclaim myclaim
+
+persistenVolumeReclaimPolicy: Retain
+persistenVolumeReclaimPolicy: Delete
+persistenVolumeReclaimPolicy: Recycle
+Reference: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#claims-as-volumes
+
+
+# 175. Practice Test - Persistent Volumes and Persistent Volume Claims
+
+- kubectl get pods
+- kubectl describe pod webapp
+
+- kubectl exec webapp -- cat /log/app.log
+
+- kubectl get pod webapp -o yaml > pod-volume.yaml
+- kubectl describe pod webapp
+
+- kubectl explain persistentvolume --recursive | less
+
+- kubectl get pvc
+- kubectl get pv
+
+# 179. Storage Class
+
+- Static Provisioning 
+- Dynamic Provisioning
+
+# 180. Practice Test - Storage Class
+
+- kubectl get storageclasses
+
+----------------------------------------
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 500Mi
+
+-----------------------------------------

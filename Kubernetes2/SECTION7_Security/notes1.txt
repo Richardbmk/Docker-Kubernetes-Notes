@@ -46,5 +46,203 @@
 - kubectl get csr
 - kubectl certificate approve jane
 - kubectl get csr jane -o yaml
+- echo "ENCODED CERTIFICATE GOES HERE" | base64 --decodeds
 
 
+# 146. KubeConfig
+
+- kubectl config view --kubeconfig=my-custom-config
+- kubectl config view
+- kubectl config use-context prod-user@production
+- kubectl config -h
+
+# 147. Practice Test - KubeConfig
+
+- kubectl config --kubeconfig=/root/my-kube-config use-context research
+- kubectl config --kubeconfig=/root/my-kube-config current-context
+
+
+
+# 149. API Groups
+
+PV = Persistent Volume
+PVC = Persistent Volume Claim
+
+- kubectl proxy
+- curl http://localhost:8001 -k
+
+- curl http://localhost:8001/version -k
+
+
+# 151. Role Based Access Controls
+
+- kubectl create -f developer-role.yaml
+- kubectl create -f devuser-developer-binding.yaml
+
+- kubectl get roles
+- kubectl get rolebindings
+- kubectl describe role developer
+- kubectl describe rolebindings devuser-developer-binding
+
+- kubectl auth can-i create deployments
+- kubectl auth can-i delete nodes
+
+- kubectl auth can-i create deployments --as dev-user
+- kubectl auth can-i create pods --as dev-user
+- kubectl auth can-i create pods --as dev-user --namespace test
+
+152. Practice Test - RBAC
+
+- kubectl describe pod kube-apiserver-controlplane -n kube-system
+- kubectl describe pod kube-apiserver-controlplane -n kube-system | grep authorization
+- kubectl get roles
+- kubectl get roles --all-namespaces --no-headers | wc -l
+- kubectl describe role kube-proxy -n kube-system
+- kubectl describe rolebinding kube-proxy -n kube-system
+- kubectl get rolebinding -n kube-system
+- kubectl get pods --as dev-user
+
+- kubectl create role developer --namespace=default --verb=list,create,delete --resource=pods
+- kubectl create rolebinding dev-user-binding --namespace=default --role=developer --user=dev-user
+
+-------------------------------------------------
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: developer
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list", "create","delete"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dev-user-binding
+subjects:
+- kind: User
+  name: dev-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+-------------------------------------------------
+
+# 153. Cluster Roles and Role Bindings
+
+- kubectl api-resources --namespace=true
+- kubectl api-resources --namespace=false
+
+- kubectl create -f cluster-admin-role.yaml
+- kubectl create -f cluster-admin-role-binding.yaml
+
+154. Practice Test - Cluster Roles and Role Bindings
+
+- kubectl get ClusterRoles --no-headers | wc -l
+- kubectl get ClusterRoleBindings --no-headers | wc -l
+- kubectl describe clusterrolebinding cluster-admin
+- kubectl describe clusterrole cluster-admin
+
+- kubectl auth can-i list nodes --as michelle
+
+# 155. Service Accounts
+
+- kubectl create serviceaccount dashboard-sa
+- kubectl get serviceaccount
+- kubectl describe serviceaccount dashboard-sa
+
+- kubectl describe secret dashboard-sa-token-kbbdm
+
+- kubectl exec -it my-kubernetes-dashboard ls /var/run/secrets/kubernetes.io/serviceaccount
+- kubectl exec -it my-kubernetes-dashboard cat /var/run/secrets/kubernetes.io/serviceaccount
+
+# 156. Practice Test Service Accounts
+
+- kubectl get serviceAccounts
+- kubectl describe sa default
+- kubectl describe serviceAccounts default
+- kubectl get deployments
+- kubectl describe deployment web-dashboard
+- kubectl describe pod web-dashboard-58
+- kubectl create sa dashboard-sa
+- kubectl describe pod web-dashboard-58 | grep -A5 serviceAccount
+- kubectl get secrets
+- kubectl describe secrets dashboard-sa-token-cknb9
+
+
+# 157. Image Security
+
+- docker login private-registry.io
+- docker run private-registry.io/apps/internal-app
+- docker create secret docker-registry regcred \
+    --docker-server= private-registry.io \
+    --docker-username= registry-uaser \
+    --docker-password= registry-password \
+    --docker-email= registry-user@org.com
+
+# 158. Practice Test - Image Security
+
+- kubectl create secret --help
+- kubectl describe pods web-bd975bd87-pn4bz
+- kubectl edit deployment web
+
+- kubectl create secret docker-registry private-reg-cred \
+    --docker-username=dock_user \
+    --docker-password=dock_password \
+    --docker-server=myprivateregistry.com:5000 \
+    --docker-email=dock_user@myprivateregistry.com
+
+# 160. Practice Test - Security Contexts
+
+- kubectl get pods
+- kubectl exec ubuntu-sleeper -- whoami
+- kubectl edit pods ubuntu-sleeper
+
+# 163. Practice Test - Network Policy
+
+- kubectl get networkpolicies
+- kubectl describe networkpolicies payroll-policy
+- kubectl get svc -n kube-system 
+
+-----------------------------------
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internal-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      name: internal
+  policyTypes:
+  - Egress
+  - Ingress
+  ingress:
+    - {}
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          name: mysql
+    ports:
+    - protocol: TCP
+      port: 3306
+
+  - to:
+    - podSelector:
+        matchLabels:
+          name: payroll
+    ports:
+    - protocol: TCP
+      port: 8080
+
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+
+-----------------------------------
