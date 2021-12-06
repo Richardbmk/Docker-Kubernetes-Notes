@@ -1,0 +1,138 @@
+# 183. Prerequisite - Switching Routing
+
+- ip link --> To see the interfaces on the host
+- ip addr 
+- ping 192.168.1.11
+
+- ip addr add 192.168.1.10/24 dev eth0 -->Assign the systems with IP  addresses on the same network
+
+- ip route 
+- ip route add 192.168.1.0/24 via 192.168.2.1 --> To configure a gateway on system B to reach the system in another Network
+
+- route --> To see existing routing configuration on a system
+- cat /proc/sys/net/ipv4/ip_forward
+
+# 184. Prerequisite - DNS
+
+- cat >> /etc/hosts
+- pong db
+- ssh db
+
+- cat /etc/nsswitch.conf
+- cat >> /etc/resolv.conf
+
+- nslookup www.google.com
+- dig www.google.com
+
+# 186. Prerequisite - Network Namespaces
+
+- ps aux
+- ip netns add red --> create new network namespaces
+
+- ip link
+- ip netns exec red ip link <--> ip -n red link
+- arp
+
+- ip link add veth-red type veth peer name veth-blue
+- ip link set veth-red netns red
+- ip link set veth-blue netns blue
+- ip -n red addr add 192.168.15.1 dev veth-red
+- ip -n blue addr add 192.168.15.1 dev veth-blue
+- ip -n red link set veth-red up
+- ip -n blue link set veth-blue up
+- ip netns exec red ping 192.168.15.2
+- ip netns exec red arp
+- ip netns exec blue arp
+- arp
+
+--> Building a linux bridge (Virtual switching)
+- ip link add v-net-0 type bridge
+- ip link
+- ip link set dev v-net-0 up
+
+- ip -n red link del veth-red
+
+- ip link add veth-red type veth peer name veth-red-br
+- ip link add veth-blue type veth peer name veth-blue-br
+
+- ip link set veth-red netns red
+- ip link set veth-red-br master v-net-0
+
+- ip link set veth-blue netns blue
+- ip link set veth-blue-br master v-net-0
+
+- ip -n red addr add 192.168.15.1 dev veth-red
+- ip -n blue addr add 192.168.15.2 dev veth-blue
+
+- ip -n red link set veth-red up
+- ip -n blue link set veth-blue up
+
+- ip addr add 192.168.15.5/24 dev v-net-0
+
+- ip netns exec blue ping 192.168.1.3
+- ip netns exec blue route
+
+- ip netns exec blue ip route add 192.168.1.0/24 via 192.168.15.5
+- iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -j MASQUERADE
+- ip netns exec blue ping 192.168.1.3
+
+- iptables -t nat -A PREROUTING --dport 80 --to-destination 192.168.15.2:80 -j DNAT
+
+
+# 188. Prerequisite - Docker Networking
+
+- docker run --network none nginx
+- docker run ..network host nginx
+
+--> BRIDGE Network
+- docker network ls
+- ip link
+- ip link add docker0 type bridge
+- ip addr
+- ip netns
+- docker inspect 9238478342
+
+- ip -n b31234908729b addr
+- curl http://172.17.0.3:80
+
+- iptables \
+        -t nat \
+        -A PREROUTING \
+        -j DNAT \
+        -dport 8080 \
+        --to-destination 80
+
+- iptables \ 
+        -t nat \
+        -A DOCKER \
+        -j DNAT \
+        --dport 8080 \
+        --to-destination 172.17.0.3:80
+
+# 189. Prerequisite - Container Networking Interface (CNI)
+
+# 190. Cluster Networking
+
+# 194. Pod Networking
+
+# 195. CNI in kubernetes
+
+- ps aux | grep kubectl 
+- ls /opt/cni/bin
+- ls /etc/cni/net.d
+- vst /etc/cni/net.d/10-bridge.conf
+
+# 196. CNI weave (Plugin)
+
+- kubectl apply -f "https:/cloud.waeve.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+- kubectl get pods -n kube-system
+- kubectl logs weave-net-5gcmb weave -n kube-system
+
+# 201. IP Address Management (IPAM) - Weave
+
+- cat /etc/cni/net.d/net-script.conf
+
+
+
+
+
