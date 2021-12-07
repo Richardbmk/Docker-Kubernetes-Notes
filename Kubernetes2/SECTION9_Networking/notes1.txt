@@ -132,6 +132,44 @@
 
 - cat /etc/cni/net.d/net-script.conf
 
+# 204. Service Networking
+
+- kubectl get pods -o wide
+- kubectl get service
+- kube-api-server --service-cluster-ip-range ipNet (Defualt: 10.0.0.0/24)
+- ps aux | grep kube-api-server
+- iptables -L -t nat | grep db-service
+- cat /var/log/kube-proxy.log
+
+# 207. DNS in kubernetes
+
+- curl http://web-service
+- curl http://web-service.apps
+- curl http://web-service.apps.svc
+- curl http://web-service.apps.cluster.local
+
+# 208. CoreDNS in Kubernetes
+
+- cat >> /etc/hosts
+- cat >> /etc/resolv.conf
+
+--> CoreDNS
+- cat /etc/coredns/Corefile
+- kubectl get configmap -n kube-system
+- kubectl get service -n kube-system
+- cat /var/lib/kubelet/config.yaml
+
+# 211. Ingress
+
+- cat ingress-deployment.yaml
+- cat ingress-service.yaml
+- cat ingress-configMap.yaml
+- cat ingress-auth.yaml
+
+- kubectl create -f Ingress-wear.yaml
+- kubectl get ingress
+
+- kubectl describe ingress ingress-wear-watch
 
 
 
