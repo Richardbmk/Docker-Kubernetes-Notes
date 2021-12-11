@@ -113,6 +113,19 @@
 
 # 190. Cluster Networking
 
+# Practice Test - Explore Kubernetes Environment
+
+- kubectl get nodes
+- kubectl get nodes -o wide
+- ip a | grep -B2 10.11.222.6  <--> ifconfig a <--> ip link <--> cat /etc/network/interfaces
+- ssh node01 ifconfig ens3
+- ssh node01 ifconfig -a
+- ip route
+- ip route show default
+- netstat -natulp | grep kube-scheduler
+- netstat -nplt
+- netstat -anp | grep etcd | grep 2379 | wc -l
+
 # 194. Pod Networking
 
 # 195. CNI in kubernetes
@@ -128,10 +141,28 @@
 - kubectl get pods -n kube-system
 - kubectl logs weave-net-5gcmb weave -n kube-system
 
+# Practice Test - Explore CNI Weave
+
+- ps -aux | grep kubelet
+- ps -aux | grep kubelet | grep network-plugin
+
+- cat -al /etc/cni/net.d/10-flannel.conflist
+
+# Practice Test - Deploy Network Solution
+
+- kubectl -n kube-system get pods
+
 # 201. IP Address Management (IPAM) - Weave
 
 - cat /etc/cni/net.d/net-script.conf
 
+# Practice Test - Networking Weave
+
+- kubectl run busybox --image=busybox --command sleep 1000 --dry-run=client -o yaml > pod.yaml
+- kubectl apply -f pod.yaml
+kubectl exec -it busybox -- bash
+kubectl exec -it busybox -- sh
+        # ip route
 # 204. Service Networking
 
 - kubectl get pods -o wide
@@ -140,6 +171,15 @@
 - ps aux | grep kube-api-server
 - iptables -L -t nat | grep db-service
 - cat /var/log/kube-proxy.log
+
+# Practice Test - Service Networking
+
+- ifconfig | grep 10.14
+- kubectl -n kube-system logs weave-net-h2x9w -c waeve (look for ipalloc-range)
+- cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep cluster-ip-range
+- kubectl get pods -n kube-system | grep kube-proxy | wc -l
+- kubectl logs <kube-proxy-pod-name> -n kube-system
+- kubectl get ds -n kube-system
 
 # 207. DNS in kubernetes
 
@@ -158,6 +198,28 @@
 - kubectl get configmap -n kube-system
 - kubectl get service -n kube-system
 - cat /var/lib/kubelet/config.yaml
+
+# Practice Test - Explore DNS
+
+- kubectl get pods -n kube-system
+- kubectl get deployments -n kube-system
+- kubectl get services -n kube-system
+- kubectl get svc -n kube-system
+- kubectl get services -n kube-system -o wide
+- kubectl describe deployments coredns -n kube-system
+- kubectl describe configmap coredns -n kube-system
+- kubectl describe svc web-service
+- kubectl get pod hr --show-labels
+
+- kubectl get pods --all-namespaces
+
+- kubectl get deployments.apps -n default
+- kubectl get pods -n payroll
+
+- kubectl get deployments.apps webapp-o yaml > webapp.yaml
+
+- kubectl exec hr -- nslookup mysql.payroll
+- kubectl exec hr -- nslookup mysql.payroll > /root/nslookup.out
 
 # 211. Ingress
 
