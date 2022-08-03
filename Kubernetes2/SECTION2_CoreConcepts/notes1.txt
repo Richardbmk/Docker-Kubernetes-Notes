@@ -54,6 +54,8 @@ ETCDCTL API version and path to certificate files. Below is the final form:
 - kubectl get pods
 - kubectl get all
 
+- kubectl create deployment httpd-frontend --image=httpd:2.4-alpine --dry-run=client  --replicas=3 -o yaml
+
 # Certification Tip!
 
 --> Create an NGINX Pod
@@ -124,6 +126,7 @@ ETCDCTL API version and path to certificate files. Below is the final form:
 - kubectl get deployments.apps
 
 - kubectl expose deployment simple-webapp-deployment --name=webapp-service --target-port=8080 --type=NodePort --port=8080 --dry-run=client -o yaml > svc.yaml
+- kubectl create service nodeport webapp-service --tcp=8080:8080 --dry-run=client -o yaml
 - kubectl apply -f svc.yaml
 
 # 42. Imperative vs Declarative

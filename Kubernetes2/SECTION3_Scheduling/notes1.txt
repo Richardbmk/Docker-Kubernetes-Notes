@@ -6,6 +6,8 @@
 # 53. Solution - Manual Scheduling (optional)
 
 - kubectl -n kube-system get pods
+- kubectl replace --force -f nginx.yaml
+- kubectl get pods --watch
 
 # 54. Labels and Selectors
 
@@ -234,3 +236,5 @@ ExecStart=/usr/local/bin/kube-scheduler \\
 - kubectl get pods --all-namespaces -o wide
 - kubectl describe pod kube-scheduler-controlplane -n kube-system
 - kubectl describe pod kube-scheduler-controlplane -n kube-system | grep Image
+
+- kubectl create -n kube-system configmap my-scheduler-config --from-file=/root/my-scheduler-config.yaml

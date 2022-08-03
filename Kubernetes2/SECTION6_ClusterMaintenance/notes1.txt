@@ -13,9 +13,11 @@
 - kubectl uncordon node01
 - kubectl describe node controlplane
 - kubectl drain node01 --ignore-daemonsets --force
+- kubectl cordon node01
 
 # 122. Cluster Upgrade Process
-
+- kubectl version
+- kubectl nodes
 - kubectl upgrade plan
 - kubectl upgrade apply
 

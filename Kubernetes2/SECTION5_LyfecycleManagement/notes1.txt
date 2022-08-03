@@ -12,6 +12,8 @@
 - kubectl roullout history deployment/myapp-deployment
 - kubectl rollout undo deployment/myapp-deployment
 
+- kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
+
 
 # 91. Practice Test - Rolling Updates and Rollbacks
 
@@ -157,6 +159,7 @@ Decoding the sensitive data in secret-data.yaml:
 - kubectl get pods,svc -n elastic-stack -o wide
 - kubectl logs app -n elastic-stack
 - kubectl get pod app -n elastic-stack -o yaml > sidecar.yaml
+- kubectl -n elastic-stack exec -it app -- sh
 
 
 
