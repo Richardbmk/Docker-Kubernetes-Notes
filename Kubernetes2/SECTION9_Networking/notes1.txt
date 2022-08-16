@@ -233,6 +233,3 @@ kubectl exec -it busybox -- sh
 
 - kubectl describe ingress ingress-wear-watch
 
-
-
-

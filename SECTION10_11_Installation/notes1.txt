@@ -1,0 +1,32 @@
+Section 10: Design and Install a Kubernetes Cluster
+
+
+Section 11: Install "Kubernetes the kubeadm way"
+
+Command used during labs:
+    1  sudo apt-get update
+    2  sudo apt-get install -y apt-transport-https ca-certificates curl
+    3  sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    4  echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    5  sudo apt-get update
+    6  sudo apt-get install -y kubelet=1.23.0-00 kubeadm=1.23.0-00 kubectl=1.23.0-00
+    7  sudo apt-mark hold kubelet kubeadm kubectl
+
+    8  ssh node01
+
+   12  kubeadm version
+   13  kubeadm upgrade plan
+   14  kubelet --version
+
+   15  kubectl get nodes
+
+   16  ip a
+   17  ifconfig
+   18  kubeadm init --apiserver-cert-extra-sans=controlplane --apiserver-advertise-address 10.12.206.9 --pod-network-cidr=10.244.0.0/16
+
+       kubeadm token --help
+       kubeadm token create --help
+
+kubeadm join 10.12.206.9:6443 --token fgu5ud.icjmzv85ctbtp1s6 \
+        --discovery-token-ca-cert-hash sha256:51114dd7f1363483202d83fc8015a5b116f0ebe8b2fe09557ac7be97e8dbf1e1
+
