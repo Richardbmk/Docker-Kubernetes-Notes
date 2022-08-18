@@ -1,0 +1,54 @@
+# 248. Advanced Kubectl Commands
+
+- kubectl get nodes -o wide
+- kubectl get nodes
+- kubectl get pods
+
+- kubectl get pods -o json
+
+- .items[0].spec.containers[0].images
+
+- kubectl get pods -o=jsonpath='{.items[0].spec.containers[0].images}'
+- kubectl get nodes -o=jsonpath='{.items[*].metadata.name}'
+- kubectl get nodes -o=jsonpath='{.items[*].status.nodeInfo.architecture}'
+- kubectl get nodes -o=jsonpath='{.items[*].status.capacity.cpu}'
+- kubectl get nodes -o=jsonpath='{.items[*].metadata.name}{.items[*].status.capacity.cpu}'
+- kubectl get nodes -o=jsonpath='{.items[*].metadata.name} {"\n"} {.items[*].status.capacity.cpu}'
+- kubectl get nodes -o=jsonpath='{.items[*].metadata.name} {"\n"} {.items[*].status.capacity.cpu}'
+
+
+- kubectl get nodes -o=jsonpath='{range .items[*]} {.metadata.name} {"\t"} {"\n"} {.items[*].status.capacity.cpu}{end}'
+
+- kubectl get nodes -o=custom-columns=<COLUMN NAME>:<JSON PATH>
+- kubectl get nodes -o=custom-columns=NODE:.metadata.name , CPU:.status.capacity.cpu
+
+- kubectl get nodes --sort-by=.metadata.name
+- kubectl get nodes --sort-by=.status.capacity.cpu
+
+# Introduction to YAML
+
+- key-value-pair
+- Array/List
+- Dictionary/Map
+
+- Dictionary in Dictionary
+- List
+- List of Dictionaries
+
+# Practice Test - Advanced Kubectl Commands
+- kubectl get nodes -o json
+- kubectl get nodes -o json > /opt/outputs/nodes.json
+- kubectl get nodes node01 -o json > /opt/outputs/node01.json
+- kubectl get nodes -o=jsonpath='{.items[*].metadata.name}'
+- kubectl get nodes -o=jsonpath='{.items[*].*.nodeInfo.osImage}' > /opt/outputs/nodes_os.tx
+- kubectl get nodes -o=jsonpath='{.items[*].status.nodeInfo.osImage}'
+- kubectl config view --kubeconfig=/root/my-kube-config -ojsonpath='{.users.*.name}' > /opt/outputs/users.txt
+
+- kubectl get pv -o=jsonpath='{.items[*].spec.capacity.storage}'
+- kubectl get pv -o=jsonpath='{.items[*].spec.capacity.storage}' --sort-by=.spec.capacity.storage
+- kubectl get pv --sort-by=.spec.capacity.storage > /opt/outputs/storage-capacity-sorted.txt
+
+- kubectl get pv -o=custom-columns=NAME:.metadata.name,CAPACITY:.spec.capacity.storage > /opt/outputs/pv-and-capacity-sorted.txt
+- kubectl get pv -o=custom-columns=NAME:.metadata.name,CAPACITY:.spec.capacity.storage --sort-by=.spec.capacity.storage > /opt/outputs/pv-and-capacity-sorted.txt
+
+- kubectl config view --kubeconfig=my-kube-config -o jsonpath="{.contexts[?(@.context.user=='aws-user')].name}" > /opt/outputs/aws-context-name
