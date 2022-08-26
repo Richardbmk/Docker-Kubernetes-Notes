@@ -77,7 +77,7 @@ CMD ["5"]            ------> args: ["10"]
 - kubectl get cm <---> kubectl get configmaps
 
 
-- kubectl create m webapp-config-map --from-literal=APP_COLOR=darkblue
+- kubectl create cm webapp-config-map --from-literal=APP_COLOR=darkblue
 
 - kubectl explain pods --recursive
 - kubectl explain pods --recursive | grep envFrom -A3

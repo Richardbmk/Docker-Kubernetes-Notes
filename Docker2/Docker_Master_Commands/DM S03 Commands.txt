@@ -70,7 +70,7 @@ docker top mongo
 
 ## Assignment Answers: Manage Multiple Containers
 
-docker container run -d -p 3306:3306 --name db -e MYSQL_RANDOM_ROOT_PASSWORD=yes MYSQL_RANDOM_ROOT_PASSWORD
+docker container run -d -p 3306:3306 --name db mysql -e MYSQL_RANDOM_ROOT_PASSWORD=yes MYSQL_RANDOM_ROOT_PASSWORD
 
 docker container logs db
 
