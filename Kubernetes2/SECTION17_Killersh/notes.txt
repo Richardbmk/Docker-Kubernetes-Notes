@@ -1,0 +1,13 @@
+Question1
+
+$ k config get-contexts
+$ k config get-contexts -o name
+
+$ kubectl config current-context
+$ k config view | grep current-context: | sed -e "s/current-context://"
+
+Question2
+
+IDENTETION IN vi 
+
+:4,10S/^/  /
