@@ -1,0 +1,21 @@
+# Useful resources:
+ 
+
+https://kubernetes.io/docs/concepts/configuration/overview/ 
+
+https://kubernetes.io/docs/concepts/security/rbac-good-practices/ 
+
+https://spacelift.io/blog/kubernetes-best-practices 
+
+https://medium.com/@tamerbenhassan/7-best-practices-for-implementing-security-contexts-in-kubernetes-68bcc182f19a 
+
+https://learnk8s.io/production-best-practices 
+
+https://cropster.atlassian.net/wiki/spaces/INF/pages/4290543617/ADR+Re-Designing+the+EKS+Cluster+for+Multi-Region+Deployment+-+The+Cluster+Infra+v1.1 
+
+https://cropster.atlassian.net/wiki/spaces/INF/pages/4201185284/ADR+Re-Designing+the+EKS+Cluster+for+Multi-Region+Deployment+-+The+Cluster+Infra+v1.0 
+
+https://cropster.atlassian.net/wiki/spaces/INF/pages/4397531583/ADR+Re-Designing+the+EKS+Cluster+for+Multi-Region+Deployment+-+The+Cluster+Infra+-+Final+Proposal+v2.0 
+
+https://cropster.atlassian.net/wiki/spaces/INF/pages/4382294060/ADR+C-Sar+app+Helm+Chart+Design+v1.0 
+
